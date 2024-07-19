@@ -1,0 +1,201 @@
+
+// Copyright (c) 2024 Nordic Semiconductor ASA
+// SPDX-License-Identifier: Apache-2.0
+
+/dts-v1/;
+#include <nordic/nrf52840_qiaa.dtsi>
+#include <dt-bindings/zmk/matrix_transform.h>
+#include "kb54_nrf52840-pinctrl.dtsi"
+#include <zephyr/dt-bindings/input/input-event-codes.h>
+
+/ {
+
+	chosen {
+		zmk,kscan = &kscan0;
+		zmk,matrix-transform = &default_transform;
+		zephyr,sram = &sram0;
+		zephyr,flash = &flash0;
+        /*
+		zephyr,code-partition = &slot0_partition;
+        */
+		zephyr,code-partition = &code_partition;
+	};
+
+	aliases {
+		charging-pin = &pmic_charging;
+		charging-err-pin = &pmic_err;
+	};
+	
+	pmic {
+		compatible = "gpio-keys";
+		pmic_charging: pmic_charging {
+			gpios = <&gpio0 29 (GPIO_PULL_UP | GPIO_ACTIVE_LOW)>;
+			zephyr,code = <INPUT_KEY_0>;
+		};
+		pmic_err: pmic_err {
+			gpios = <&gpio0 30 (GPIO_PULL_UP | GPIO_ACTIVE_LOW)>;
+			zephyr,code = <INPUT_KEY_1>;
+		};
+	};
+
+    default_transform: keymap_transform_0 {
+        compatible = "zmk,matrix-transform";
+        columns = <54>;
+        rows = <1>;
+        map = <
+        RC(0,0)  RC(0,1)  RC(0,2)  RC(0,3)  RC(0,4) RC(0,5)		RC(0,32) RC(0,31) RC(0,30) RC(0,29) RC(0,28) RC(0,27)
+        RC(0,6)  RC(0,7)  RC(0,8)  RC(0,9)  RC(0,10) RC(0,11)	RC(0,38) RC(0,37) RC(0,36) RC(0,35) RC(0,34) RC(0,33)
+        RC(0,12) RC(0,13) RC(0,14) RC(0,15) RC(0,16) RC(0,17)   RC(0,44) RC(0,43) RC(0,42) RC(0,41) RC(0,40) RC(0,39)
+        RC(0,18) RC(0,19) RC(0,20) RC(0,21) RC(0,22) RC(0,23)   RC(0,50) RC(0,49) RC(0,48) RC(0,47) RC(0,46) RC(0,45)
+                                   RC(0,24) RC(0,25) RC(0,26)   RC(0,53) RC(0,52) RC(0,51)
+        >;
+    };
+
+	kscan0: kscan {
+		compatible = "zmk,kscan-gpio-direct";
+		input-gpios
+		= <&gpio1 1 GPIO_ACTIVE_LOW> // 1
+		, <&gpio1 2 GPIO_ACTIVE_LOW> // 2
+		, <&gpio1 4 GPIO_ACTIVE_LOW> // 3
+		, <&gpio1 6 GPIO_ACTIVE_LOW> // 4
+		, <&gpio0 9 GPIO_ACTIVE_LOW> // 5
+		, <&gpio0 10 GPIO_ACTIVE_LOW> // 6
+		, <&gpio0 17 GPIO_ACTIVE_LOW> // 7
+		, <&gpio0 20 GPIO_ACTIVE_LOW> // 8
+		, <&gpio0 22 GPIO_ACTIVE_LOW> // 9
+		, <&gpio0 24 GPIO_ACTIVE_LOW> // 10
+		, <&gpio1 0 GPIO_ACTIVE_LOW> // 11
+		, <&gpio0 25 GPIO_ACTIVE_LOW> // 12
+		, <&gpio0 7 GPIO_ACTIVE_LOW> // 13
+		, <&gpio0 11 GPIO_ACTIVE_LOW> // 14
+		, <&gpio0 16 GPIO_ACTIVE_LOW> // 15
+		, <&gpio0 14 GPIO_ACTIVE_LOW> // 16
+		, <&gpio0 13 GPIO_ACTIVE_LOW> // 17
+		, <&gpio0 15 GPIO_ACTIVE_LOW> // 18
+		, <&gpio1 15 GPIO_ACTIVE_LOW> // 19
+		, <&gpio1 13 GPIO_ACTIVE_LOW>  // 20
+		, <&gpio0 31 GPIO_ACTIVE_LOW> // 21
+		, <&gpio0 4 GPIO_ACTIVE_LOW> // 22
+		, <&gpio0 26 GPIO_ACTIVE_LOW> // 23
+		, <&gpio0 27 GPIO_ACTIVE_LOW> // 24
+		, <&gpio1 10 GPIO_ACTIVE_LOW> // 25
+		, <&gpio1 12 GPIO_ACTIVE_LOW> // 26
+		, <&gpio1 11 GPIO_ACTIVE_LOW> // 27
+		;
+	};
+};
+
+&i2c1 {
+	status = "okay";
+	pinctrl-0 = <&i2c1_default>;
+	pinctrl-1 = <&i2c1_sleep>;
+	pinctrl-names = "default", "sleep";
+	max17262@36 {
+		compatible = "maxim,max17262";
+		reg = <0x36>;
+		design-voltage = <3600>;
+		desired-voltage = <3600>;
+		desired-charging-current = <2000>;
+		design-cap = <17000>;
+		empty-voltage = <3300>;
+		recovery-voltage = <3880>;
+		charge-voltage = <3600>;
+		status = "okay";
+	};
+};
+
+/*
+
+&flash0 {
+	partitions {
+		compatible = "fixed-partitions";
+		#address-cells = <1>;
+		#size-cells = <1>;
+		
+		boot_partition: partition@0 {
+			label = "mcuboot";
+			reg = <0x0 0xc000>; // 48KiB
+		};
+		slot0_partition: partition@c000 {
+			label = "image-0";
+			reg = <0xc000 0xb0000>; // 704 KiB
+		};
+		storage_partition: partition@bc000 {
+			label = "storage";
+			reg = <0xbc000 0xa000>; // 40 KiB
+		};
+		keymap_partition: partition@c6000 {
+			label = "keymap";
+			reg = <0xc6000 0x3a000>; // 232 KiB
+		};
+	};
+};
+
+*/
+
+// Using the same flash layout as the nice nano to support adafruit bootloader.
+&flash0 {
+    /*
+     * For more information, see:
+     * http://docs.zephyrproject.org/latest/devices/dts/flash_partitions.html
+     */
+    partitions {
+        compatible = "fixed-partitions";
+        #address-cells = <1>;
+        #size-cells = <1>;
+
+        sd_partition: partition@0 {
+            reg = <0x00000000 0x00026000>;
+        };
+        code_partition: partition@26000 {
+            reg = <0x00026000 0x000c6000>;
+        };
+
+        /*
+         * The flash starting at 0x000ec000 and ending at
+         * 0x000f3fff is reserved for use by the application.
+         */
+
+        /*
+         * Storage partition will be used by FCB/LittleFS/NVS
+         * if enabled.
+         */
+        storage_partition: partition@ec000 {
+            reg = <0x000ec000 0x00008000>;
+        };
+
+        boot_partition: partition@f4000 {
+            reg = <0x000f4000 0x0000c000>;
+        };
+    };
+};
+
+
+&ieee802154 {
+	status = "okay";
+};
+
+&gpio0 {
+	status = "okay";
+};
+
+&gpio1 {
+	status = "okay";
+};
+
+&gpiote {
+	status = "okay";
+};
+/*
+&gpiote0 {
+	status = "okay";
+};
+*/
+
+&uicr {
+  nfct-pins-as-gpios;
+};
+
+zephyr_udc0: &usbd {
+    status = "okay";
+};

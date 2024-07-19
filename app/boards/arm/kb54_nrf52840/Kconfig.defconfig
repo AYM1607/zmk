@@ -1,0 +1,46 @@
+if BOARD_KB54_NRF52840_L
+
+config BOARD
+    default "kb54_nrf52840_l"
+
+config ZMK_SPLIT_BLE_ROLE_CENTRAL
+    default y
+
+endif # BOARD_KB54_NRF52840_L
+
+
+
+if BOARD_KB54_NRF52840_R
+
+config BOARD
+    default "kb54_nrf52840_r"
+
+endif # BOARD_KB54_NRF52840_R
+
+
+
+if BOARD_KB54_NRF52840_L || BOARD_KB54_NRF52840_R
+
+config ZMK_SPLIT
+    default y
+
+config BT_CTLR
+    default BT
+
+config ZMK_KSCAN_MATRIX_WAIT_BETWEEN_OUTPUTS
+    default 5
+
+config PINCTRL
+    default y
+
+if USB
+
+config USB_NRFX
+    default y
+
+config USB_DEVICE_STACK
+    default y
+
+endif # USB
+
+endif # BOARD_KB54_NRF52840_L || BOARD_KB54_NRF52840_R

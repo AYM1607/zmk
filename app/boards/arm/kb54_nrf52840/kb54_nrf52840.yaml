@@ -1,0 +1,21 @@
+identifier: kb54_nrf52840
+name: KB54 nRF52840
+type: mcu
+arch: arm
+ram: 256
+flash: 1024
+outputs:
+  - usb
+  - ble
+toolchain:
+  - zephyr
+  - gnuarmemb
+  - xtools
+supported:
+  - usb_device
+  - ble
+  - ieee802154
+  - watchdog
+  - gpio
+  - spi
+  - i2c
