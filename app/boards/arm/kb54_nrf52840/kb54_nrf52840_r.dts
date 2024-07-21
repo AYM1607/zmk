@@ -2,9 +2,8 @@
 
 / {
 	model = "KB54 nRF52840 R";
-	compatible = "kb54_nrf52840_r";
 };
 
 &default_transform {
     col-offset = <27>;
-}
+};

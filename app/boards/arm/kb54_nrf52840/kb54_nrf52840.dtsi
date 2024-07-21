@@ -1,23 +1,22 @@
-
 // Copyright (c) 2024 Nordic Semiconductor ASA
 // SPDX-License-Identifier: Apache-2.0
 
 /dts-v1/;
 #include <nordic/nrf52840_qiaa.dtsi>
-#include <dt-bindings/zmk/matrix_transform.h>
 #include "kb54_nrf52840-pinctrl.dtsi"
+
+#include <dt-bindings/zmk/matrix_transform.h>
 #include <zephyr/dt-bindings/input/input-event-codes.h>
 
+
 / {
+	compatible = "kb54_nrf52840";
 
 	chosen {
 		zmk,kscan = &kscan0;
 		zmk,matrix-transform = &default_transform;
 		zephyr,sram = &sram0;
 		zephyr,flash = &flash0;
-        /*
-		zephyr,code-partition = &slot0_partition;
-        */
 		zephyr,code-partition = &code_partition;
 	};
 
@@ -25,7 +24,7 @@
 		charging-pin = &pmic_charging;
 		charging-err-pin = &pmic_err;
 	};
-	
+
 	pmic {
 		compatible = "gpio-keys";
 		pmic_charging: pmic_charging {
@@ -104,36 +103,6 @@
 	};
 };
 
-/*
-
-&flash0 {
-	partitions {
-		compatible = "fixed-partitions";
-		#address-cells = <1>;
-		#size-cells = <1>;
-		
-		boot_partition: partition@0 {
-			label = "mcuboot";
-			reg = <0x0 0xc000>; // 48KiB
-		};
-		slot0_partition: partition@c000 {
-			label = "image-0";
-			reg = <0xc000 0xb0000>; // 704 KiB
-		};
-		storage_partition: partition@bc000 {
-			label = "storage";
-			reg = <0xbc000 0xa000>; // 40 KiB
-		};
-		keymap_partition: partition@c6000 {
-			label = "keymap";
-			reg = <0xc6000 0x3a000>; // 232 KiB
-		};
-	};
-};
-
-*/
-
-// Using the same flash layout as the nice nano to support adafruit bootloader.
 &flash0 {
     /*
      * For more information, see:
@@ -186,16 +155,7 @@
 &gpiote {
 	status = "okay";
 };
-/*
-&gpiote0 {
-	status = "okay";
-};
-*/
 
 &uicr {
   nfct-pins-as-gpios;
-};
-
-zephyr_udc0: &usbd {
-    status = "okay";
 };

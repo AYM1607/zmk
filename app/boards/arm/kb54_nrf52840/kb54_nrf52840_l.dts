@@ -2,5 +2,8 @@
 
 / {
 	model = "KB54 nRF52840 L";
-	compatible = "kb54_nrf52840_l";
+};
+
+zephyr_udc0: &usbd {
+    status = "okay";
 };
