@@ -2,6 +2,25 @@
 
 / {
 	model = "KB54 nRF52840 L";
+    chosen {
+        zephyr,display = &sharpdisp;
+    };
+};
+
+&spi0 {
+	compatible = "nordic,nrf-spi";
+	status = "okay";
+	pinctrl-0 = <&spi0_default>;
+	pinctrl-1 = <&spi0_sleep>;
+	pinctrl-names = "default", "sleep";
+	cs-gpios = < &gpio0 8 GPIO_ACTIVE_HIGH >;
+	sharpdisp: sharpdisp@0 {
+		compatible = "sharp,ls0xx";
+		reg = <0>;
+		spi-max-frequency = <1000000>;
+		width = <128>;
+		height = <128>;
+	};
 };
 
 zephyr_udc0: &usbd {
