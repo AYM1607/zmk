@@ -30,17 +30,26 @@
     keymap {
         compatible = "zmk,keymap";
         default_layer {
+            display-name = "DEF";
 			label = "DEF";
             bindings = <
+
    &kp GRAVE    &kp N1      &kp N2      &kp N3      &kp N4      &kp N5              &kp N6          &kp N7      &kp N8      &kp N9      &kp N0          &kp DEL
    &kp ESC      &kp Q       &kp W       &kp F       &kp P       &kp B               &kp J           &kp L       &kp U       &kp Y       &kp EQUAL       &kp BSPC
    &kp SQT      &kp A       &kp R       &kp S       &hm LCMD T  &kp G               &kp M           &hm LCMD N  &kp E       &kp I       &kp O           &kp RET
    &kp TAB      &kp Z       &kp X       &kp C       &kp D       &kp V               &kp K           &kp H       &kp COMMA   &kp DOT     &kp SEMI        &kp FSLH 
                                         &kp LCMD    &kp LSHFT   &kp LCTRL           &to SYMBOLS_L   &kp SPACE   &to NUMBERS_L
+   /* QWERTY */
+   /* &kp GRAVE    &kp N1      &kp N2      &kp N3      &kp N4      &kp N5              &kp N6          &kp N7      &kp N8      &kp N9      &kp N0          &kp DEL
+   &kp ESC      &kp Q       &kp W       &kp E       &kp R       &kp T               &kp Y           &kp U       &kp I       &kp O       &kp P           &kp BSPC
+   &kp SQT      &kp A       &kp S       &kp D       &hm LCMD F  &kp G               &kp H           &hm LCMD J  &kp K       &kp L       &kp SEMI        &kp RET
+   &kp TAB      &kp Z       &kp X       &kp C       &kp V       &kp B               &kp N           &kp M       &kp COMMA   &kp DOT     &kp EQUAL       &kp FSLH 
+                                        &kp LCMD    &kp LSHFT   &kp LCTRL           &to SYMBOLS_L   &kp SPACE   &to NUMBERS_L */
             >;
         };
 
         symbols_layer {
+            display-name = "SYMB";
 			label = "SYMB";
             bindings = <
    &kp GRAVE    &kp N1      &kp N2      &kp N3      &kp N4      &kp N5              &kp N6          &kp N7      &kp N8      &kp N9      &kp N0          &kp DEL
@@ -52,6 +61,7 @@
         };
 
         arrows_layer {
+            display-name = "NAV";
 			label = "NAV";
             bindings = <
    &kp GRAVE    &kp N1          &kp N2          &kp N3          &kp N4          &kp N5                          &kp N6          &kp N7      &kp N8      &kp N9      &kp N0          &kp DEL
@@ -63,6 +73,7 @@
         };
 
         numbers_layer {
+            display-name = "NUM";
 			label = "NUM";
             bindings = <
    &kp GRAVE    &kp N1          &kp N2          &kp N3          &kp N4          &kp N5                          &kp N6          &kp N7      &kp N8      &kp N9      &kp N0          &kp DEL

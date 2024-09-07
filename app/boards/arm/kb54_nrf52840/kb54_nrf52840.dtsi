@@ -15,6 +15,8 @@
 	chosen {
 		zmk,kscan = &kscan0;
 		zmk,matrix-transform = &default_transform;
+		zmk,battery = &fuel_gauge0;
+        zephyr,display = &sharpdisp;
 		zephyr,sram = &sram0;
 		zephyr,flash = &flash0;
 		zephyr,code-partition = &code_partition;
@@ -89,17 +91,33 @@
 	pinctrl-0 = <&i2c1_default>;
 	pinctrl-1 = <&i2c1_sleep>;
 	pinctrl-names = "default", "sleep";
-	max17262@36 {
+	fuel_gauge0: max17262@36 {
 		compatible = "maxim,max17262";
 		reg = <0x36>;
 		design-voltage = <3600>;
 		desired-voltage = <3600>;
 		desired-charging-current = <2000>;
-		design-cap = <17000>;
+		design-cap = <33000>;
 		empty-voltage = <3300>;
 		recovery-voltage = <3880>;
 		charge-voltage = <3600>;
 		status = "okay";
+	};
+};
+
+&spi0 {
+	compatible = "nordic,nrf-spi";
+	status = "okay";
+	pinctrl-0 = <&spi0_default>;
+	pinctrl-1 = <&spi0_sleep>;
+	pinctrl-names = "default", "sleep";
+	cs-gpios = < &gpio0 8 GPIO_ACTIVE_HIGH >;
+	sharpdisp: sharpdisp@0 {
+		compatible = "sharp,ls0xx";
+		reg = <0>;
+		spi-max-frequency = <1000000>;
+		width = <128>;
+		height = <128>;
 	};
 };
 
